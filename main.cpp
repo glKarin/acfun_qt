@@ -14,7 +14,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     // Symbian specific
 #ifdef Q_OS_SYMBIAN
-    QApplication::setAttribute(Qt::AA_CaptureMultimediaKeys);
+    //QApplication::setAttribute(Qt::AA_CaptureMultimediaKeys);
+    QApplication::setAttribute((Qt::ApplicationAttribute)11);
 #endif
 
     QScopedPointer<QApplication> app(createApplication(argc, argv));

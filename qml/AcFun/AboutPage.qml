@@ -115,6 +115,7 @@ AcFun弹幕视频网(AcFun.tv)是中国最具影响力的网络弹幕视频平�
                     if (acsettings.accessToken !== ""){
                         if (Script.checkAuthData()){
                             var prop = { username: "夜切", talkwith: 108853 };
+                            prop.p2p = acsettings.userId + "-" + prop.talkwith;
                             pageStack.push(Qt.resolvedUrl("UserPageCom/ConverPage.qml"), prop);
                         }
                     } else {
@@ -126,6 +127,67 @@ AcFun弹幕视频网(AcFun.tv)是中国最具影响力的网络弹幕视频平�
                 platformInverted: true;
                 text: "作者微博";
                 onClicked: utility.openURLDefault("http://m.weibo.cn/u/1786664917");
+            }
+
+
+            AbstractItem {
+                Text {
+                    anchors.left: parent.paddingItem.left;
+                    anchors.verticalCenter: parent.verticalCenter;
+                    font: constant.titleFont;
+                    color: constant.colorLink;
+                    text: "项目主页";
+                }
+                onClicked: {
+                    utility.openURLDefault("http://github.com/Yeatse/acfun_qt");
+                }
+            }
+
+            Row{
+                width: parent.width
+                height: constant.graphicSizeLarge;
+                AbstractItem {
+                    width: parent.width / 3;
+                    Text {
+                        anchors.fill: parent;
+                        horizontalAlignment: Text.AlignHCenter;
+                        verticalAlignment: Text.AlignVCenter;
+                        font: constant.titleFont;
+                        color: constant.colorLink;
+                        text: "关注作者";
+                    }
+                    onClicked: {
+                        signalCenter.follow_user_by_id(108853);
+                    }
+                }
+                AbstractItem {
+                    width: parent.width / 3;
+                    Text {
+                        anchors.fill: parent;
+                        horizontalAlignment: Text.AlignHCenter;
+                        verticalAlignment: Text.AlignVCenter;
+                        font: constant.titleFont;
+                        color: constant.colorLink;
+                        text: "作者主页";
+                    }
+                    onClicked: {
+                        signalCenter.view_user_detail_by_id(108853);
+                    }
+                }
+                AbstractItem {
+                    width: parent.width / 3;
+                    Text {
+                        anchors.fill: parent;
+                        horizontalAlignment: Text.AlignHCenter;
+                        verticalAlignment: Text.AlignVCenter;
+                        font: constant.titleFont;
+                        color: constant.colorLink;
+                        text: "作者贴吧";
+                    }
+                    onClicked: {
+                        utility.openURLDefault("https://tieba.baidu.com/f?kw=夜切");
+                    }
+                }
             }
         }
     }

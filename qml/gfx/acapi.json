@@ -1,0 +1,1984 @@
+{
+    "data": [
+        {
+            "category": "主页",
+            "apis": [
+                {
+                    "name": "获取大分类",
+                    "url": "http://apipc.app.acfun.cn/v3/channels/allChannels",
+					"rest": [],
+                    "params": [],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "integer",
+                            "necessary": true
+                        },
+                        {
+                            "name": "market",
+                            "value": "应用来源(字符串)",
+							"type_of": "string",
+                            "necessary": false
+                        },
+                        {
+                            "name": "appVersion",
+                            "value": "应用版本(主号.次号.修正号)",
+							"type_of": "string",
+                            "necessary": false
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "近期活动",
+                    "url": "http://apipc.app.acfun.cn/v3/channels/channelOperate?pos=0",
+					"rest": [],
+                    "params": [
+                        {
+                            "name": "pos",
+							"desc": "未知",
+                            "value": [
+								{
+									"value": "0",
+									"desc": "未知"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        }
+					],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "integer",
+                            "necessary": true
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "香蕉榜",
+                    "url": "http://apipc.app.acfun.cn/v3/regions/banana?day=1",
+					"rest": [],
+                    "params": [
+                        {
+                            "name": "day",
+							"desc": "范围",
+                            "value": [
+								{
+									"value": "1",
+									"desc": "天"
+								},
+								{
+									"value": "7",
+									"desc": "周"
+								},
+								{
+									"value": "-1",
+									"desc": "不限"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        }
+					],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "integer",
+                            "necessary": true
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                }
+            ]
+        },
+		{
+			"category": "频道",
+			"apis": [
+                {
+                    "name": "排行榜/分类视频/分类->本区最热",
+                    "url": "http://apipc.app.acfun.cn/v3/regions/search",
+					"rest": [],
+                    "params": [
+                        {
+                            "name": "channelId",
+							"desc": "频道ID",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "day",
+							"desc": "范围",
+                            "value": [
+								{
+									"value": "1",
+									"desc": "天"
+								},
+								{
+									"value": "7",
+									"desc": "周"
+								},
+								{
+									"value": "-1",
+									"desc": "不限"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "sort",
+							"desc": "排序",
+                            "value": [
+								{
+									"value": "5",
+									"desc": "排行榜排序"
+								},
+								{
+									"value": "1",
+									"desc": "分类->本区最热排序"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "pageNo",
+							"desc": "页",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "pageSize",
+							"desc": "数量",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        }
+					],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "integer",
+                            "necessary": true
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "分类视频 Hot & New",
+                    "url": "http://apipc.app.acfun.cn/v3/regions",
+					"rest": [],
+                    "params": [
+                        {
+                            "name": "channelId",
+							"desc": "频道ID",
+                            "value": [
+								{
+									"value": "0",
+									"desc": "客户端主页"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        }
+					],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "integer",
+                            "necessary": true
+                        },
+                        {
+                            "name": "market",
+                            "value": "应用来源(字符串), channelId=0时必需",
+							"type_of": "string",
+                            "necessary": false
+                        },
+                        {
+                            "name": "appVersion",
+                            "value": "应用版本(主号.次号.修正号), channelId=0时必需",
+							"type_of": "string",
+                            "necessary": false
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "分类->本区最新",
+                    "url": "http://apipc.app.acfun.cn/v3/regions/new/%1",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "频道ID",
+							"type_of": "integer"
+						}
+					],
+                    "params": [
+                        {
+                            "name": "pageNo",
+							"desc": "页",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        }
+					],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "integer",
+                            "necessary": true
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                }
+			]
+		},
+		{
+			"category": "搜索",
+			"apis": [
+                {
+                    "name": "热门搜索关键词",
+                    "url": "http://apipc.app.acfun.cn/v2/hotwords",
+					"rest": [
+					],
+                    "params": [
+					],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "integer",
+                            "necessary": true
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "主搜索",
+                    "url": "http://search.app.acfun.cn/mobileSearch",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "q",
+							"desc": "关键词",
+                            "value": [
+							],
+							"type_of": "string",
+                            "necessary": true
+                        },
+                        {
+                            "name": "sortField",
+							"desc": "排序",
+                            "value": [
+								{
+									"value": "score",
+									"desc": "相关度"
+								},
+								{
+									"value": "views",
+									"desc": "观看最多"
+								},
+								{
+									"value": "comments",
+									"desc": "评论最多"
+								},
+								{
+									"value": "stows",
+									"desc": "收藏最多"
+								},
+								{
+									"value": "releaseDate",
+									"desc": "最新发布"
+								}
+							],
+							"type_of": "string",
+                            "necessary": false
+                        },
+                        {
+                            "name": "aiCount",
+							"desc": "番剧数量",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "spCount",
+							"desc": "合辑数量",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "greenCount",
+							"desc": "文章数量",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "listCount",
+							"desc": "视频数量",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "userCount",
+							"desc": "UP主数量",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        }
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "搜索->番剧",
+                    "url": "http://search.app.acfun.cn/search/album",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "q",
+							"desc": "关键词",
+                            "value": [
+							],
+							"type_of": "string",
+                            "necessary": true
+                        },
+                        {
+                            "name": "sort",
+							"desc": "排序",
+                            "value": [
+								{
+									"value": "0",
+									"desc": "相关度"
+								},
+								{
+									"value": "11",
+									"desc": "观看最多"
+								},
+								{
+									"value": "13",
+									"desc": "评论最多"
+								},
+								{
+									"value": "15",
+									"desc": "收藏最多"
+								},
+								{
+									"value": "1",
+									"desc": "最新发布"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "pageNo",
+							"desc": "页",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "pageSize",
+							"desc": "数量",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "status",
+							"desc": "状态",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        }
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "搜索->视频/文章/合辑/UP主",
+                    "url": "http://search.app.acfun.cn/search",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "q",
+							"desc": "关键词",
+                            "value": [
+							],
+							"type_of": "string",
+                            "necessary": true
+                        },
+                        {
+                            "name": "sortField",
+							"desc": "排序",
+                            "value": [
+								{
+									"value": "score",
+									"desc": "相关度"
+								},
+								{
+									"value": "views",
+									"desc": "观看最多"
+								},
+								{
+									"value": "comments",
+									"desc": "评论最多"
+								},
+								{
+									"value": "stows",
+									"desc": "收藏最多"
+								},
+								{
+									"value": "releaseDate",
+									"desc": "最新发布"
+								}
+							],
+							"type_of": "string",
+                            "necessary": false
+                        },
+                        {
+                            "name": "pageNo",
+							"desc": "页",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+						{
+                            "name": "pageSize",
+							"desc": "搜索视频/文章/合辑->数量, 搜索UP主设为0",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+						{
+                            "name": "type",
+							"desc": "类型",
+                            "value": [
+								{
+									"value": "1",
+									"desc": "合辑"
+								},
+								{
+									"value": "2",
+									"desc": "文章/视频/UP主"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+						{
+                            "name": "qqChannelId",
+							"desc": "不包括的频道",
+                            "value": [
+								{
+									"value": "63",
+									"desc": "搜索->视频"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+						{
+                            "name": "channelIds",
+							"desc": "限制频道(多个频道用,分隔)",
+                            "value": [
+								{
+									"value": "63",
+									"desc": "搜索->文章"
+								}
+							],
+							"type_of": "string",
+                            "necessary": false
+                        },
+						{
+                            "name": "aiCount",
+							"desc": "番剧数量(设为0)",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+						{
+                            "name": "spCount",
+							"desc": "合辑数量(设为0)",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+						{
+                            "name": "aiCount",
+							"desc": "UP主数量(搜索UP主->数量, 其他搜索设为0)",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        }
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "搜索关键词建议词",
+                    "url": "http://search.app.acfun.cn/suggest",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "q",
+							"desc": "关键词",
+                            "value": [
+							],
+							"type_of": "string",
+                            "necessary": true
+                        }
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "通过用户名查找用户",
+                    "url": "http://www.acfun.cn/member/findUser.aspx",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "username",
+							"desc": "用户名",
+                            "value": [
+							],
+							"type_of": "string",
+                            "necessary": true
+                        }
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "html",
+                    "access": false,
+                    "from": "html"
+                }
+			]
+		},
+		{
+			"category": "视频/文章",
+			"apis": [
+                {
+                    "name": "视频详情",
+                    "url": "http://apipc.app.acfun.cn/v2/videos/%1",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "视频ID",
+							"type_of": "integer"
+						}
+					],
+                    "params": [
+                        {
+                            "name": "from",
+							"desc": "从哪个方式进入详情",
+                            "value": [
+							],
+							"type_of": "string",
+                            "necessary": false
+                        }
+					],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "integer",
+                            "necessary": true
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "文章详情",
+                    "url": "http://apipc.app.acfun.cn/v2/articles/%1",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "文章ID",
+							"type_of": "integer"
+						}
+					],
+                    "params": [
+                        {
+                            "name": "from",
+							"desc": "从哪个方式进入详情",
+                            "value": [
+							],
+							"type_of": "string",
+                            "necessary": false
+                        }
+					],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "integer",
+                            "necessary": true
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "评论",
+                    "url": "http://mobile.app.acfun.cn/comment/content/list",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "version",
+							"desc": "版本",
+                            "value": [
+								{
+									"value": "4",
+									"desc": ""
+								}
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        },
+                        {
+                            "name": "contentId",
+							"desc": "稿件ID",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        },
+                        {
+                            "name": "pageNo",
+							"desc": "页",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "pageSize",
+							"desc": "数量",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        }
+					],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "string",
+                            "necessary": true
+                        },
+                        {
+                            "name": "market",
+                            "value": "应用来源(字符串)",
+							"type_of": "string",
+                            "necessary": false
+                        },
+                        {
+                            "name": "appVersion",
+                            "value": "应用版本(主号.次号.修正号)",
+							"type_of": "string",
+                            "necessary": false
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "提交评论",
+                    "url": "http://mobile.app.acfun.cn/comment.aspx",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "userId",
+							"desc": "登录用户ID",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": true
+						},
+						{
+							"name": "contentId",
+							"desc": "稿件ID",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": true
+						},
+						{
+							"name": "text",
+							"desc": "评论内容",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "source",
+							"desc": "发送方式",
+							"value": [
+								{
+									"value": "mobile",
+									"desc": "来自手机"
+								}
+							],
+							"type_of": "string",
+							"necessary": false
+						},
+						{
+							"name": "quoteId",
+							"desc": "引用的评论ID",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "captcha",
+							"desc": "验证码",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": false
+						}
+					],
+					"headers": [
+                    ],
+                    "request_type": "post",
+                    "response_type": "json",
+                    "access": true,
+                    "from": "mobile"
+                }
+			]
+		},
+		{
+			"category": "视频地址",
+			"apis": [
+                {
+                    "name": "根据视频ID获取稿件ID和视频地址信息",
+                    "url": "http://www.acfun.cn/video/getVideo.aspx",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "id",
+							"desc": "视频ID",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        }
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "github"
+                },
+                {
+                    "name": "弹幕v4",
+                    "url": "http://danmu.aixifan.com/V4/%1/0/%2",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "视频ID",
+							"type_of": "integer"
+						},
+						{
+							"index": 2,
+							"desc": "数量",
+							"type_of": "integer"
+						}
+					],
+                    "params": [
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "弹幕v2",
+                    "url": "http://danmu.aixifan.com/V2/%1",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "视频ID",
+							"type_of": "integer"
+						}
+					],
+                    "params": [
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "github"
+                },
+                {
+                    "name": "主站视频地址解析",
+                    "url": "http://player.acfun.cn/flash_data",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "vid",
+							"desc": "视频ID",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        },
+                        {
+                            "name": "ct",
+							"desc": "未知",
+                            "value": [
+								{
+									"value": "85",
+									"desc": "固定"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        },
+                        {
+                            "name": "ev",
+							"desc": "未知",
+                            "value": [
+								{
+									"value": "3",
+									"desc": "固定"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        },
+                        {
+                            "name": "sign",
+							"desc": "签名",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        },
+                        {
+                            "name": "time",
+							"desc": "UNIX时间戳(毫秒)",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        }
+					],
+                    "headers": [
+                        {
+                            "name": "referer",
+                            "value": "http://www.acfun.cn/v/ac + 稿件ID",
+							"type_of": "string",
+                            "necessary": true
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "github"
+                }
+			]
+		},
+		{
+			"category": "用户",
+			"apis": [
+                {
+                    "name": "我的收藏->视频/文章",
+                    "url": "http://apipc.app.acfun.cn/v2/favorites/content",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "type",
+							"desc": "类型",
+                            "value": [
+								{
+									"value": "0",
+									"desc": "视频"
+								},
+								{
+									"value": "1",
+									"desc": "文章"
+								}
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "pageNo",
+							"desc": "页",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "pageSize",
+							"desc": "数量",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "我的收藏->合辑",
+                    "url": "http://apipc.app.acfun.cn/v2/favorites/album",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "pageNo",
+							"desc": "页",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "pageSize",
+							"desc": "数量",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "我的收藏->番剧",
+                    "url": "http://apipc.app.acfun.cn/v3/favorites/bangumi",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "pageNo",
+							"desc": "页",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "pageSize",
+							"desc": "数量",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "稿件收藏相关(是否收藏->GET, 收藏->POST, 取消收藏->DELETE)",
+                    "url": "http://apipc.app.acfun.cn/v2/favorites/content/%1",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "稿件ID",
+							"type_of": "integer"
+						}
+					],
+                    "params": [
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get/post/delete",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "稿件收藏相关(是否收藏->GET, 收藏->POST, 取消收藏->DELETE)",
+                    "url": "http://apipc.app.acfun.cn/v2/favorites/album/%1",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "合辑ID",
+							"type_of": "integer"
+						}
+					],
+                    "params": [
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get/post/delete",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "番剧收藏相关(是否收藏->GET, 收藏->POST, 取消收藏->DELETE)",
+                    "url": "http://apipc.app.acfun.cn/v3/favorites/bangumi/%1",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "番剧ID",
+							"type_of": "integer"
+						}
+					],
+                    "params": [
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get/post/delete",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "私信相关",
+                    "url": "http://mobile.app.acfun.cn/api/mail.aspx",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "name",
+							"desc": "操作类型",
+							"value": [
+								{
+									"value": "getGroups",
+									"desc": "获取私信对话列表->GET"
+								},
+								{
+									"value": "getMails",
+									"desc": "获取对话消息列表->GET"
+								},
+								{
+									"value": "newMail",
+									"desc": "发送对话消息->POST"
+								},
+								{
+									"value": "getUnreadMailsCount",
+									"desc": "对话中未读消息数量->GET"
+								},
+								{
+									"value": "deleteGroup",
+									"desc": "删除对话->POST"
+								}
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "page",
+							"desc": "页(对于name=getGroups/getMails)",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "p2p",
+							"desc": "P2P(对于name=getUnreadMailsCount/getMails/deleteGroup)",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": false
+						},
+						{
+							"name": "content",
+							"desc": "发送的消息内容(对于name=newMail)",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": false
+						},
+						{
+							"name": "userId",
+							"desc": "消息发送对象ID(对于name=newMail)",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "mailGroupId",
+							"desc": "被删除的对话ID(对于name=deleteGroup)",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get/post",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "提醒列表",
+                    "url": "http://mobile.app.acfun.cn/comment/at/list",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "pageNo",
+							"desc": "页",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "pageSize",
+							"desc": "数量",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "userId",
+							"desc": "登录用户ID",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": true
+						},
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "用户是否有新的通知",
+                    "url": "http://mobile.app.acfun.cn/member/unRead.aspx",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "userId",
+							"desc": "登录用户ID",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": true
+						},
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "关注用户相关(是否关注->GET, 关注/取消关注->POST, 关注列表/粉丝列表->GET)",
+                    "url": "http://mobile.app.acfun.cn/api/friend.aspx",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "name",
+							"desc": "操作类型",
+							"value": [
+								{
+									"value": "checkFollow",
+									"desc": "是否关注用户->GET"
+								},
+								{
+									"value": "follow",
+									"desc": "关注用户->POST"
+								},
+								{
+									"value": "unfollow",
+									"desc": "取消关注用户->POST"
+								},
+								{
+									"value": "getFollowingList",
+									"desc": "用户的关注列表"
+								},
+								{
+									"value": "getFollowedList",
+									"desc": "用户的粉丝列表"
+								}
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "userId",
+							"desc": "是否关注/关注/取消关注的用户ID",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": true
+						},
+						{
+							"name": "groupId",
+							"desc": "关注分组ID(对于name=follow/getFollowingList)",
+							"value": [
+								{
+									"value": "0",
+									"desc": "默认分组(对于name=follow)"
+								},
+								{
+									"value": "-1",
+									"desc": "全部分组(对于name=getFollowingList)"
+								}
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "pageNo",
+							"desc": "页(name=getFollowedList/getFollowingList)",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "pageSize",
+							"desc": "数量(name=getFollowedList/getFollowingList)",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get/post",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "用户投稿->视频/文章(也是视频详情页面下的相关视频)",
+                    "url": "http://apipc.app.acfun.cn/v2/user/content",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "userId",
+							"desc": "用户ID",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        },
+                        {
+                            "name": "type",
+							"desc": "类型",
+                            "value": [
+								{
+									"value": "0",
+									"desc": "视频"
+								},
+								{
+									"value": "1",
+									"desc": "文章"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+                        {
+                            "name": "sort",
+							"desc": "排序",
+                            "value": [
+								{
+									"value": "1",
+									"desc": "最新投稿"
+								},
+								{
+									"value": "2",
+									"desc": "最多播放"
+								},
+								{
+									"value": "3",
+									"desc": "最多香蕉"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+						{
+							"name": "pageNo",
+							"desc": "页",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "pageSize",
+							"desc": "数量",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+                        {
+                            "name": "status",
+							"desc": "状态",
+                            "value": [
+								{
+									"value": "2",
+									"desc": "正常"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        }
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": false,
+					"from": "mobile"
+				},
+                {
+                    "name": "用户投稿->合辑",
+                    "url": "http://apipc.app.acfun.cn/v2/user/album",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "userId",
+							"desc": "用户ID",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        },
+                        {
+                            "name": "sort",
+							"desc": "排序",
+                            "value": [
+								{
+									"value": "4",
+									"desc": "最近更新"
+								},
+								{
+									"value": "5",
+									"desc": "最多收藏"
+								}
+							],
+							"type_of": "integer",
+                            "necessary": false
+                        },
+						{
+							"name": "pageNo",
+							"desc": "页",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "pageSize",
+							"desc": "数量",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": false,
+					"from": "mobile"
+				},
+                {
+                    "name": "用户详情",
+                    "url": "http://apipc.app.acfun.cn/v2/user/content/profile",
+					"rest": [
+					],
+                    "params": [
+                        {
+                            "name": "userId",
+							"desc": "用户ID",
+                            "value": [
+							],
+							"type_of": "integer",
+                            "necessary": true
+                        }
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "用户登录(通过手机号/邮箱)",
+                    "url": "http://account.app.acfun.cn/api/account/signin/normal",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "username",
+							"desc": "口令",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "password",
+							"desc": "密纹",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						}
+					],
+					"headers": [
+					],
+					"request_type": "post",
+					"response_type": "json",
+					"access": false,
+					"from": "mobile"
+				},
+                {
+                    "name": "签到相关(是否签到->GET, 签到->POST)",
+                    "url": "http://webapi.app.acfun.cn/record/actions/signin",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						},
+						{
+							"name": "channelId",
+							"desc": "是否签到时为1",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get/post",
+					"response_type": "json",
+					"access": true,
+					"from": "mobile"
+				},
+                {
+                    "name": "获取用户香蕉数",
+                    "url": "http://mobile.app.acfun.cn/banana/getBananaCount.aspx",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "access_token",
+							"desc": "Access Token",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": true
+						}
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": true,
+                    "from": "mobile"
+                }
+			]
+		},
+		{
+			"category": "番剧",
+			"apis": [
+                {
+                    "name": "番剧详情",
+                    "url": "http://apipc.app.acfun.cn/v3/bangumis/%1",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "番剧ID",
+							"type_of": "integer"
+						}
+					],
+                    "params": [
+					],
+                    "headers": [
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                },
+                {
+                    "name": "番剧视频",
+                    "url": "http://apipc.app.acfun.cn/v3/bangumis/video/",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "albumId",
+							"desc": "番剧ID",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": true
+						},
+						{
+							"name": "pageNo",
+							"desc": "页",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "pageSize",
+							"desc": "数量",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": false,
+					"from": "mobile"
+				},
+                {
+                    "name": "番剧列表",
+                    "url": "http://www.acfun.cn/album/abm/bangumis/list",
+					"rest": [
+					],
+                    "params": [
+						{
+							"name": "num",
+							"desc": "页",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "size",
+							"desc": "数量",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "sorter",
+							"desc": "排序",
+							"value": [
+								{
+									"value": "1",
+									"desc": "更新日期"
+								},
+								{
+									"value": "6",
+									"desc": "放送日期"
+								},
+								{
+									"value": "2",
+									"desc": "创建日期"
+								}
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "asc",
+							"desc": "顺序",
+							"value": [
+								{
+									"value": "0",
+									"desc": "倒序"
+								},
+								{
+									"value": "1",
+									"desc": "正序"
+								}
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "isNew",
+							"desc": "本季新番",
+							"value": [
+								{
+									"value": "1",
+									"desc": "本季新番"
+								},
+								{
+									"value": "undefined",
+									"desc": "全部"
+								}
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "week",
+							"desc": "星期(对于isNew=1)",
+							"value": [
+								{
+									"value": "0",
+									"desc": "星期日"
+								},
+								{
+									"value": "1",
+									"desc": "星期一"
+								},
+								{
+									"value": "2",
+									"desc": "星期儿"
+								},
+								{
+									"value": "3",
+									"desc": "星期三"
+								},
+								{
+									"value": "4",
+									"desc": "星期四"
+								},
+								{
+									"value": "5",
+									"desc": "星期五"
+								},
+								{
+									"value": "6",
+									"desc": "星期六"
+								}
+							],
+							"type_of": "integer",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": false,
+					"from": "html"
+				}
+			]
+		},
+		{
+			"category": "合辑",
+			"apis": [
+                {
+                    "name": "合辑详情",
+                    "url": "http://apipc.app.acfun.cn/v3/album/%1",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "合辑ID",
+							"type_of": "integer"
+						}
+					],
+					"params": [
+						{
+							"name": "from",
+							"desc": "从哪个方式进入合辑详情页面",
+							"value": [
+							],
+							"type_of": "string",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": false,
+					"from": "mobile"
+				},
+				{
+					"name": "番剧视频",
+					"url": "http://apipc.app.acfun.cn/v3/album/%1/contents",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "合辑ID",
+							"type_of": "integer"
+						}
+					],
+					"params": [
+						{
+							"name": "groupId",
+							"desc": "合辑分组ID",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": true
+						},
+						{
+							"name": "pageNo",
+							"desc": "页",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						},
+						{
+							"name": "pageSize",
+							"desc": "数量",
+							"value": [
+							],
+							"type_of": "integer",
+							"necessary": false
+						}
+					],
+					"headers": [
+					],
+					"request_type": "get",
+					"response_type": "json",
+					"access": false,
+					"from": "mobile"
+				}
+			]
+		},
+		{
+			"category": "其他",
+			"apis": [
+                {
+                    "name": "视频页面推广广告",
+                    "url": "http://apipc.app.acfun.cn/v2/spread/video/%1",
+					"rest": [
+						{
+							"index": 1,
+							"desc": "稿件ID",
+							"type_of": "integer"
+						}
+					],
+                    "params": [
+					],
+                    "headers": [
+                        {
+                            "name": "deviceType",
+                            "value": "设备类型(整型)",
+							"type_of": "string",
+                            "necessary": true
+                        }
+                    ],
+                    "request_type": "get",
+                    "response_type": "json",
+                    "access": false,
+                    "from": "mobile"
+                }
+			]
+		}
+	]
+}

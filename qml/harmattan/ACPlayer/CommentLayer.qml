@@ -5,6 +5,13 @@ import "Comments.js" as Utils
 Item {
     id: root;
 
+		// begin(11 a)
+		property bool running: acsettings.playerShowDanmu;
+
+		visible: running;
+		clip: true;
+		// end(11 a)
+
     property string commentId;
     property int timePlayed;
 
@@ -26,17 +33,26 @@ Item {
     }
 
     function createText(){
+			// begin(11 a)
+			if(!running)
+			{
+				return;
+			}
+			// end(11 a)
         if (timePlayed === 0) Utils.commentIndex = 0;
         var secs = timePlayed / 1000;
         var poolIdx = Utils.commentPool[Utils.commentIndex];
         while(poolIdx !== undefined && poolIdx.time < secs
               && root.commentCount < visual.maxCommentCount){
             if (secs - poolIdx.time < 3){
+							// begin(11 c)
                 var prop = {
                     "color": Utils.intToColor(poolIdx.color),
-                    "font.pixelSize": poolIdx.fontSize,
+                    "font.pixelSize": parseInt(poolIdx.fontSize * acsettings.playerDanmuFactory),
+										"opacity": acsettings.playerDanmuOpacity,
                     "text": poolIdx.text
                 }
+								// end(11 c)
                 singleComment.createObject(root, prop);
             }
             poolIdx = Utils.commentPool[++Utils.commentIndex];
@@ -62,7 +78,9 @@ Item {
                 property: "x";
                 from: root.width;
                 to: -commentText.width;
-                duration: 3000;
+								// begin(11 c)
+                duration: parseInt(3000 / acsettings.playerDanmuSpeed);
+								// end(11 c)
                 onCompleted: commentText.destroy();
             }
 

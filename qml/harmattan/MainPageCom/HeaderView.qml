@@ -50,7 +50,9 @@ Item {
             MouseArea {
                 id: mouseArea;
                 anchors.fill: parent;
-                onClicked: signalCenter.viewDetail(model.jumpurl)
+								// begin(11 c)
+								onClicked: internal.enterClass(model.action_name, model.jumpurl);
+								// end(11 c)
             }
         }
         Timer {

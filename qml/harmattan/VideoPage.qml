@@ -19,18 +19,28 @@ Page {
     }
 
     function load(){
-        VL.loadSource(type, sid, messageModel);
+			// begin(11 c)
+        VL.loadSource(type, cid, messageModel, createPlayer);
+				// end(11 c)
     }
     function exit(){
         pageStack.pop(undefined, true);
         app.showStatusBar = true;
         app.platformStyle.cornersVisible = true;
     }
-    function createPlayer(url){
+		// begin(11 c)
+    function createPlayer(obj){
+			if(typeof(obj) !== "object")
+			{
+				messageModel.append({text: obj});
+				return;
+			}
+			messageModel.append({text: "正在打开播放器..."});
         playerLoader.sourceComponent = Qt.createComponent("ACPlayer/ACPlayer.qml");
         if (playerLoader.status === Loader.Ready){
             var item = playerLoader.item;
-            item.source = url;
+						//item.source = url;
+						item.streams = obj;
             item.commentId = cid;
             item.playStarted.connect(hideMessage);
             item.exit.connect(exit);
@@ -38,6 +48,7 @@ Page {
             console.log("Error: player is not ready");
         }
     }
+		// end(11 c)
     function hideMessage(){
         exitBtn.visible = false;
         messageModel.clear();

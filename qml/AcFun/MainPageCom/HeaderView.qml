@@ -51,7 +51,7 @@ Item {
             MouseArea {
                 id: mouseArea;
                 anchors.fill: parent;
-                onClicked: signalCenter.viewDetail(model.jumpurl)
+                onClicked: internal.enterClass(model.action_name, model.jumpurl);
             }
         }
         Timer {

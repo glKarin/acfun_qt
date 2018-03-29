@@ -18,17 +18,24 @@ Page {
     }
 
     function load(){
-        VL.loadSource(type, sid, messageModel);
+        VL.loadSource(type, cid, messageModel, createPlayer);
     }
     function exit(){
         pageStack.pop(undefined, true);
         app.showStatusBar = true;
     }
-    function createPlayer(url){
+    function createPlayer(obj){
+        if(typeof(obj) !== "object")
+        {
+            messageModel.append({text: obj});
+            return;
+        }
+        messageModel.append({text: "正在打开播放器..."});
         playerLoader.sourceComponent = Qt.createComponent("ACPlayer/ACPlayer.qml");
         if (playerLoader.status === Loader.Ready){
             var item = playerLoader.item;
-            item.source = url;
+            //item.source = url;
+            item.streams = obj;
             item.commentId = cid;
             item.playStarted.connect(hideMessage);
             item.exit.connect(exit);

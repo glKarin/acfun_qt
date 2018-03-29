@@ -4,6 +4,7 @@ LetvParser.prototype.constructor = LetvParser;
 LetvParser.prototype.name = "乐视";
 
 LetvParser.prototype.start = function(vid){
+	LetvParser.prototype.error("不支持"); return;
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function(){
                         if (xhr.readyState == xhr.DONE){

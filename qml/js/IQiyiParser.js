@@ -4,6 +4,7 @@ IQiyiParser.prototype.constructor = IQiyiParser;
 IQiyiParser.prototype.name = "爱奇艺";
 
 IQiyiParser.prototype.start = function(vid){
+	IQiyiParser.prototype.error("不支持"); return;
             var resultUrl = "";
 
             var url = "http://cache.m.iqiyi.com/jp/tmts/272448000/1ed6cc39cdcfeb2f3d9156a6f1b8943e/";

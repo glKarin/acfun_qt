@@ -1,20 +1,139 @@
-acfun (2.2.0) unstable; urgency=low
-  * <Add change description here>
+acfun (2.4.1harmattan.karin20180327rjinx11-3) unstable; urgency=low
+  * Fixed all function.
+  * Add keyword history, format comment.
+  * Full search.
+  * Add setting page.
+  * Support play all parts of video.
+  * View user home.
+  * Alert list in user message page.
+  * Add view player window.
+  * Video player setting.
+  * Add album.
+  ^ Video source: youku, zhuzhan, qq, sina.
 
- -- Yeatse <iyeatse@gmail.com>  Fri, 08 Nov 2013 21:41:43 +0800
+ -- Karin <beyondk2000@gmail.com>  Tue, 27 Mar 2018 08:29:56 +0800
 
-acfun (2.1.1) unstable; urgency=low
-  * <Add change description here>
+acfun (2.4.1harmattan.karin20150322repair10) unstable; urgency=low
 
- -- Yeatse <iyeatse@gmail.com>  Fri, 08 Nov 2013 00:50:55 +0800
+  * Fixed user add/remove video collection.
+  * Fixed LeTV video usrl parse engine.
+  * Change parse Youku video url behavior, stop parsing when all failed or first success: order -> 3gphd(full, hd_1) - 3gp(full, nd_1) - mp4(part0, hd_2) - flv(part0, nd_2) - hd2(part0, sd) - hd3(part0, od1080p)
+  * Add format code "[ac=xxxxxxx]acxxxxxxx[/ac]" to link in comment, and go to detail page when link clicked.
+  * Limit image height to 50px in comments.
 
-acfun (2.0.1) unstable; urgency=low
-  * <Add change description here>
+ -- Karin Zhao <beyondk2000@gmail.com>  Sun, 22 Mar 2015 19:28:51 +0800
 
- -- Yeatse <iyeatse@gmail.com>  Thu, 07 Nov 2013 19:59:47 +0800
+acfun (2.4.1harmattan.karin20150301repair9) unstable; urgency=low
 
-acfun (0.0.1) unstable; urgency=low
+  * Add user everyday-sign-on.
+  * Change list view instead tumbler in ranking page.
+  * Fixed comment html text color bug.
 
-  * Initial Release.
+ -- Karin Zhao <beyondk2000@gmail.com>  Sun, 1 Mar 2015 11:43:35 +0800
 
- -- Yeatse <iyeatse@gmail.com>  Fri, 25 Oct 2013 00:28:21 +0800
+acfun (2.4.1harmattan.karin20150220repair8) unstable; urgency=low
+
+  * Fixed send comment to working.
+  * Support full AcFun comment to html text.
+  * Fixed send/delete private messages.
+  * Support full private message content to html text.
+  * Fixed get user's post contributes.
+  * Home page category videos API -> rank, Class page videos API -> category, Ranking page API -> rank.
+  * UNFIXED ABOUT USER OPERATION(ONLY ONE): add/delete user's collection.
+
+ -- Karin Zhao <beyondk2000@gmail.com>  Fri, 27 Fab 2015 12:39:14 +0800
+
+acfun (2.4.1harmattan.karin20150220repair7) unstable; urgency=low
+
+  * FIxed user detail: user name, user signature, view history, collection record.
+  * Add use AC-musume image insteads code likes "[emot=ac,**/]" in comments list.
+  * UNFIXED ABOUT USER OPERATION: add collection, get/post private message, get my videos, post video comment.
+  * Fixed can't get comments in some video in video detail page.
+  * Add try to play video when getting bangumi video ID fail (ID = -1).
+
+ -- Karin Zhao <beyondk2000@gmail.com>  Fri, 20 Fab 2015 17:48:54 +0800
+
+acfun (2.4.1harmattan.karin20150213repair5) unstable; urgency=low
+
+  *
+  * repair 5:
+  *   Fixed a serious bug.
+  *
+  * repair 4:
+  *   Fixed a little bug.
+  *
+  * repair 3:
+  *   Optimized class page.
+  *
+  * New API repaired:
+  *   Home Page Categories video lists.
+  *   Show Top videos in Rank page.
+  *   Show bangumi(playbill ?) in Series page, and add "继续加载" to view all	bangumi.
+  *   Show bangumi(playbill ?) detail, and add "继续加载" to view all episodes in Episode group.
+  *   Fixed get comments of video.
+  *   Show videos by selecting category.
+  *
+  * New Improved by Karin.
+  *   Record not more than 20 keywords that has searched, and support save to local, clear all and remove one. It can instead hot keys list in search page.
+  *   Use tumbler instead button row in video rank page.
+  *   Use tumbler instead selection dialog in class page. So it can view all channel videos with not need to back.
+  *
+  * Last API repaired:
+  *	  Home thumbnails.
+  *   Search by keyword and list results.
+  *   Get video/article detail, so supported videos can be parsed and played.
+  *
+  * Last Improved by Karin:
+  *   Press Return key can also search operation when virtual keyboard is opened in search page.
+  *   Add seek position of video played by clicking progress bar in Yestes AcFun Player, and on-screen comments are sync.
+  *
+  * Yestse 2.4.1 version changes:
+  *   Repaired Youku(优酷) video url parse function.
+  *   Add support IQiyi(爱奇艺) and LeTV(乐视) video url parse function.
+  *
+  * UnRepair API:
+  *   Hotkeys.
+  *
+  * Repairing API:
+  *   Get all categories map.
+  *   Home categories.
+  *
+  * UnTest API:
+  *   Everything about user/profile, likes login, add-favorite, write-comment and so on.
+  *
+
+ -- Karin Zhao <beyondk2000@gmail.com>  Sun, 15 Fab 2015 11:19:32 +0800
+
+acfun (2.4.1harmattan.karin20150208repair1) unstable; urgency=low
+
+  *
+  * Some API repaired:
+  *	  Home thumbnails.
+  *   Search by keyword and list results.
+  *   Get video/article detail, so supported videos can be parsed and played.
+  *
+  * Improved by Karin:
+  *   Press Return key can also search operation when virtual keyboard is opened in search page.
+  *   Add seek position of video played by clicking progress bar in Yestes AcFun Player, and on-screen comments are sync.
+  *
+  * Yestse 2.4.1 version changes:
+  *   Repaired Youku(优酷) video url parse function.
+  *   Add support IQiyi(爱奇艺) and LeTV(乐视) video url parse function.
+  *
+  * UnRepair API:
+  *   Home categories.
+  *   Playbill.
+  *   Hotkeys.
+  *   Comments.
+  *
+  * UnTest API:
+  *   Everything about user/profile, likes login, add-favorite, write-comment and so on.
+  *
+
+ -- Karin Zhao <beyondk2000@gmail.com>  Sun, 08 Feb 2015 10:06:52 +0800
+
+acfun (2.4.1harmattan.karin20150207repair0) unstable; urgency=low
+
+  * Initial Repair Release for Harmattan.
+
+ -- Karin Zhao <beyondk2000@gmail.com>  Sat, 07 Feb 2015 10:41:43 +0800

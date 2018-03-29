@@ -14,11 +14,73 @@
 #include <MDataUri>
 #endif
 
+// begin(11 c)
+#include "netlizard_string_converter.h"
+
+// login
+#define USERNAME "username"
+#define USERPWD "userpwd"
+#define SAVE_USER_LOGIN_INFO "save_user_login_info"
+
+// browser
+#define ACCEPT_LOGIN_STATEMENT "accept_login_statement"
+#define BROWSER_LOAD_IMAGE "browser_load_image"
+#define BROWSER_HELPER "browser_helper"
+#define BROWSER_AURO_HANDLE_URL "browser_auto_handle_url"
+
+// player
+#define PLAYER_SHOW_DANMU "player_show_danmu"
+#define PLAYER_DANMU_OPACITY "player_danmu_opacity"
+#define PLAYER_DANMU_SPEED "player_danmu_speed"
+#define PLAYER_DANMU_FACTORY "player_danmu_factory"
+
+#define PLAYER_DANMU_OPACITY_RANGE "player_danmu_opacity_range"
+#define PLAYER_DANMU_SPEED_RANGE "player_danmu_speed_range"
+#define PLAYER_DANMU_FACTORY_RANGE "player_danmu_factory_range"
+#define APP_RC "app_rc"
+
+#define USE_EXTERNALLY_BROWSER "use_externally_browser"
+#define ARTICLE_LOAD_IMAGE "article_load_image"
+
+#define RANGE_MIN "min"
+#define RANGE_MAX "max"
+#define RANGE_STEP "step"
+
+#define REPAIRED "repaired"
+#define KARIN_REPAIRED 11
+
+#define USER_INFO_SPLIT ","
+
+#define APP_VERSION_DEFAULT "5.0.0"
+#define MARKET_DEFAULT "portal"
+#define DEVICE_TYPE_DEFAULT "1"
+#define USER_AGENT_DEFAULT "acvideo core/5.0.0(Nokia;TA-1041;7.1.1)"
+
+#define RC_DEVELOPER_NAME "r_developer"
+#define RC_RELEASED_NAME "r_released"
+#define RC_VERSION_NAME "r_version"
+#define RC_CODE_NAME "r_code"
+#define RC_AC_NAME "r_ac"
+#define RC_RP_NAME "r_rp"
+#define RC_DEVELOPER "Karin"
+#define RC_RELEASED "2018.03.27"
+#define RC_VERSION "2.4.1rjinx11"
+#define RC_CODE "jinx"
+#define RC_AC QString::fromUtf8("香磷")
+#define RC_RP "11"
+// end(11 c)
+
 Utility::Utility(QObject *parent) :
     QObject(parent),
     settings(0)
 {
     settings = new QSettings(this);
+		// begin(11 c)
+		setValue(DEVICE_TYPE, getValue(DEVICE_TYPE, QVariant(DEVICE_TYPE_DEFAULT)));
+		setValue(MARKET, getValue(MARKET, QVariant(MARKET_DEFAULT)));
+		setValue(APP_VERSION, getValue(APP_VERSION, QVariant(APP_VERSION_DEFAULT)));
+		setValue(USER_AGENT, getValue(USER_AGENT, QVariant(USER_AGENT_DEFAULT)));
+		// end(11 c)
 }
 
 Utility::~Utility()
@@ -294,3 +356,154 @@ bool Utility::Launch(const int id, const QString& param)
     return err == KErrNone;
 }
 #endif
+
+// begin(11 a)
+void Utility::copy_to_clipboard(const QString &text) const
+{
+	QApplication::clipboard() -> setText(text);
+}
+
+QVariant Utility::get_user_login_info() const
+{
+	QString username = settings -> value(USERNAME).toString();
+	QString pwd = settings -> value(USERPWD).toString();
+	QVariantMap map;
+	QString name_string("");
+	QString pwd_string("");
+	if(!username.isEmpty())
+	{
+		char *name_str = NULL;
+		Converter_DecodeIntStringToString(username.toLocal8Bit().data(), USER_INFO_SPLIT, &name_str);
+		name_string = QString::fromLocal8Bit(name_str);
+		free(name_str);
+	}
+	if(!pwd.isEmpty())
+	{
+		char *pwd_str = NULL;
+		Converter_DecodeIntStringToString(pwd.toLocal8Bit().data(), USER_INFO_SPLIT, &pwd_str);
+		pwd_string = QString::fromLocal8Bit(pwd_str);
+		free(pwd_str);
+	}
+	map.insert(USERNAME, QVariant(name_string));
+	map.insert(USERPWD, QVariant(pwd_string));
+	return map;
+}
+
+void Utility::set_user_login_info(const QString &username, const QString &pwd)
+{
+	if(username.isEmpty() || pwd.isEmpty())
+	{
+		settings -> setValue(USERNAME, QVariant(""));
+		settings -> setValue(USERPWD, QVariant(""));
+		return;
+	}
+	char *name_str = NULL;
+	Converter_EncodeStringToIntString(username.toLocal8Bit().data(), USER_INFO_SPLIT, &name_str);
+	char *pwd_str = NULL;
+	Converter_EncodeStringToIntString(pwd.toLocal8Bit().data(), USER_INFO_SPLIT, &pwd_str);
+
+	settings -> setValue(USERNAME, QVariant(QString(name_str)));
+	settings -> setValue(USERPWD, QVariant(QString(pwd_str)));
+
+	free(name_str);
+	free(pwd_str);
+}
+
+void Utility::sign_in()
+{
+    ACNetworkCookieJar::GetInstance()->save();
+}
+
+void Utility::sign_out()
+{
+    ACNetworkCookieJar::GetInstance()->clearCookies();
+		QByteArray data;
+    setValue("Cookies", data);
+}
+
+void Utility::reset_header_setting()
+{
+		setValue(DEVICE_TYPE, QVariant(DEVICE_TYPE_DEFAULT));
+		setValue(MARKET, QVariant(MARKET_DEFAULT));
+		setValue(APP_VERSION, QVariant(APP_VERSION_DEFAULT));
+		setValue(USER_AGENT, QVariant(USER_AGENT_DEFAULT));
+}
+
+bool Utility::is_update()
+{
+	bool n = false;
+	if(!settings -> contains(REPAIRED))
+		n = true;
+	else
+	{
+		QVariant v = settings -> value(REPAIRED);
+		QString ver = v.toString();
+		if(ver < QString(KARIN_REPAIRED))
+			n = true;
+	}
+	if(n)
+		settings -> setValue(REPAIRED, QVariant(KARIN_REPAIRED));
+	return n;
+}
+
+QVariant Utility::get_constant(const QString &name) const
+{
+	QVariantMap map;
+#define __MAKE_RANGE_MAP(n, min, max, step) \
+	if(name == n) \
+	{ \
+		map.insert(RANGE_MIN, QVariant(min)); \
+		map.insert(RANGE_MAX, QVariant(max)); \
+		map.insert(RANGE_STEP, QVariant(step)); \
+	}
+	__MAKE_RANGE_MAP(PLAYER_DANMU_OPACITY_RANGE, 0.1, 1.0, 0.1)
+	else __MAKE_RANGE_MAP(PLAYER_DANMU_SPEED_RANGE, 0.5, 2.0, 0.1)
+	else __MAKE_RANGE_MAP(PLAYER_DANMU_FACTORY_RANGE, 0.2, 2.0, 0.1)
+	else if(name == APP_RC)
+	{
+		map.insert(RC_DEVELOPER_NAME, QVariant(RC_DEVELOPER));
+		map.insert(RC_VERSION_NAME, QVariant(RC_VERSION));
+		map.insert(RC_RELEASED_NAME, QVariant(RC_RELEASED));
+		map.insert(RC_CODE_NAME, QVariant(RC_CODE));
+		map.insert(RC_AC_NAME, QVariant(RC_AC));
+		map.insert(RC_RP_NAME, QVariant(RC_RP));
+	}
+	return map;
+#undef __MAKE_RANGE_MAP
+}
+
+QVariant Utility::urlparse(const QString &u) const
+{
+	QUrl url(u);
+	QVariantMap map;
+	map.insert("scheme", url.scheme());
+	map.insert("host", url.host());
+	map.insert("path", url.path());
+	map.insert("password", url.password());
+	map.insert("userName", url.userName());
+	map.insert("port", url.port());
+	QVariantMap m;
+	QList<QPair<QString, QString> > querys = url.queryItems();
+	for(QList<QPair<QString, QString> >::const_iterator itor = querys.begin();
+			itor != querys.end();
+			++itor)
+	{
+		m.insert(itor -> first, itor -> second);
+	}
+	map.insert("queryItems", m);
+	return map;
+}
+
+bool Utility::exec(const QString &cmd) const
+{
+	if(cmd.isEmpty())
+		return false;
+	return QProcess::startDetached(cmd);
+}
+
+void Utility::weibo_share(const QString &title, const QString &link, const QString &pic)
+{
+	QString url = QString("http://service.weibo.com/share/share.php?url=%1&type=3&title=%2&pic=%3").arg(link).arg(title).arg(pic);
+	openURLDefault(url);
+}
+// end(11 a)

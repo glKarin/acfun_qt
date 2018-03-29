@@ -86,6 +86,9 @@ AcFun弹幕视频网(AcFun.tv)是中国最具影响力的网络弹幕视频平�
                     if (acsettings.accessToken !== ""){
                         if (Script.checkAuthData()){
                             var prop = { username: "夜切", talkwith: 108853 };
+														// begin(11 a)
+														prop.p2p = acsettings.userId + "-" + prop.talkwith;
+														// end(11 a)
                             pageStack.push(Qt.resolvedUrl("UserPageCom/ConverPage.qml"), prop);
                         }
                     } else {
@@ -105,6 +108,66 @@ AcFun弹幕视频网(AcFun.tv)是中国最具影响力的网络弹幕视频平�
                     Qt.openUrlExternally("http://m.weibo.cn/u/1786664917");
                 }
             }
+						// begin(11 a)
+            AbstractItem {
+                Text {
+                    anchors.left: parent.paddingItem.left;
+                    anchors.verticalCenter: parent.verticalCenter;
+                    font: constant.titleFont;
+                    color: constant.colorLight;
+                    text: "项目主页";
+                }
+                onClicked: {
+                    Qt.openUrlExternally("http://github.com/Yeatse/acfun_qt");
+                }
+            }
+						Row{
+							width: parent.width
+							height: constant.graphicSizeLarge;
+							AbstractItem {
+								width: parent.width / 3;
+								Text {
+									anchors.fill: parent;
+									horizontalAlignment: Text.AlignHCenter;
+									verticalAlignment: Text.AlignVCenter;
+									font: constant.titleFont;
+									color: constant.colorLight;
+									text: "关注作者";
+								}
+								onClicked: {
+									signalCenter.follow_user_by_id(108853);
+								}
+							}
+							AbstractItem {
+								width: parent.width / 3;
+								Text {
+									anchors.fill: parent;
+									horizontalAlignment: Text.AlignHCenter;
+									verticalAlignment: Text.AlignVCenter;
+									font: constant.titleFont;
+									color: constant.colorLight;
+									text: "作者主页";
+								}
+								onClicked: {
+									signalCenter.view_user_detail_by_id(108853);
+								}
+							}
+							AbstractItem {
+								width: parent.width / 3;
+								Text {
+									anchors.fill: parent;
+									horizontalAlignment: Text.AlignHCenter;
+									verticalAlignment: Text.AlignVCenter;
+									font: constant.titleFont;
+									color: constant.colorLight;
+									text: "作者贴吧";
+								}
+								onClicked: {
+									Qt.openUrlExternally("https://tieba.baidu.com/f?kw=夜切");
+								}
+							}
+						}
+						// end(11 a)
         }
     }
 }

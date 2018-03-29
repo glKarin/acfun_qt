@@ -10,7 +10,7 @@ Item {
     signal clicked;
     signal pressAndHold;
 
-    implicitWidth: ListView.view ? ListView.view.width : 0;
+    implicitWidth: ListView.view ? ListView.view.width : parent.width; //0;
     implicitHeight: platformStyle.graphicSizeLarge;
 
     Item {
@@ -37,7 +37,9 @@ Item {
         anchors.fill: parent;
         enabled: root.enabled;
         onClicked: {
-            root.ListView.view.currentIndex = index;
+            if (root.ListView.view){
+                root.ListView.view.currentIndex = index;
+            }
             root.clicked();
         }
         onPressed: {

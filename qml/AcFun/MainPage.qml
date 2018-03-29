@@ -6,6 +6,7 @@ import "../js/main.js" as Script
 
 MyPage {
     id: page;
+    title: "Acfun for Symbian";
 
     tools: ToolBarLayout {
         ToolButton {
@@ -33,9 +34,18 @@ MyPage {
     Connections {
         target: signalCenter;
         onInitialized: {
-            internal.refresh();
             if (acsettings.showFirstHelp){
                 Qt.createComponent("MainPageCom/FirstStartInfo.qml").createObject(page);
+            }
+            if(utility.is_update())
+            {
+                signalCenter.open_info_dialog("更新", signalCenter.c_KARIN_UPDATE, undefined, function(){
+                    internal.refresh();
+                });
+            }
+            else
+            {
+                internal.refresh();
             }
         }
     }
@@ -45,51 +55,49 @@ MyPage {
 
         function refresh(){
             Script.getVideoCategories();
-            getHeader();
-            getCategory();
+            get_home();
         }
 
-        function getHeader(){
+        function get_home()
+        {
             headerView.loading = true;
             headerView.error = false;
-            var opt = {"model": headerView.model};
-            function s(){ headerView.loading = false; }
-            function f(err){
-                headerView.loading = false;
-                signalCenter.showMessage(err);
-                headerView.error = true;
-            }
-            Script.getHomeThumbnails(opt, s, f);
-        }
-        function getCategory(){
             placeHolder.loading = true;
             placeHolder.error = false;
-            var opt = { "model": homeModel };
-            function s(){ placeHolder.loading = false; }
+            var opt = {
+                "header_model": headerView.model,
+                "category_model": homeModel
+            };
+            function s(){
+                headerView.loading = false;
+                placeHolder.loading = false;
+            }
             function f(err){
+                headerView.loading = false;
                 placeHolder.loading = false;
                 signalCenter.showMessage(err);
+                headerView.error = true;
                 placeHolder.error = true;
             }
-            Script.getHomeCategroies(opt, s, f);
+            Script.make_home(opt, s, f);
         }
 
-        function enterClass(id){
-            for (var i in signalCenter.videocategories){
-                var v = signalCenter.videocategories[i];
-                if (id === v.id){
-                    var prop = { cid: id, cname: v.name, subclass: v.subclasse };
-                    var p = pageStack.push(Qt.resolvedUrl("ClassPage.qml"), prop);
-                    p.getlist();
-                    break;
-                }
-            }
+        function enterClass(action_name, href){
+            Script.handle_home_action(action_name, href);
         }
     }
 
     Menu {
         id: mainMenu;
         MenuLayout {
+            MenuItem {
+                text: "分区";
+                onClicked: pageStack.push(Qt.resolvedUrl("ExtensionPage.qml"));
+            }
+            MenuItem {
+                text: "设置";
+                onClicked: pageStack.push(Qt.resolvedUrl("SettingPage.qml"));
+            }
             MenuItem {
                 text: "关于";
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"));
@@ -146,7 +154,7 @@ MyPage {
                 id: headerView;
                 onRefresh: {
                     Script.getVideoCategories();
-                    internal.getHeader();
+                    internal.get_home();
                 }
             }
             Repeater {
@@ -167,7 +175,7 @@ MyPage {
                     visible: placeHolder.error;
                     onClicked: {
                         Script.getVideoCategories();
-                        internal.getCategory();
+                        internal.get_home();
                     }
                 }
             }

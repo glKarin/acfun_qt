@@ -19,7 +19,7 @@ AbstractItem {
         width: 120;
         sourceSize.width: 120;
         fillMode: Image.PreserveAspectCrop;
-        source: model.cover;
+        source: model.cover_h || model.cover;
     }
     Column {
         anchors {

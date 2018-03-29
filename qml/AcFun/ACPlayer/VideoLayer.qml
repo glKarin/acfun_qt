@@ -11,12 +11,14 @@ Item {
     property alias timePlayed: video.position;
     property int timeRemaining: duration - timePlayed;
     property alias volume: video.volume;
+    property alias seekable: video.seekable;
 
     property bool isPlaying: false;
     property bool freezing: video.status === Video.Loading;
 
     signal playbackStarted;
     signal loadStarted;
+    signal playFinished;
 
     function play(){
         video.play();
@@ -90,7 +92,16 @@ Item {
         autoLoad: true;
         anchors.fill: parent;
         fillMode: Video.PreserveAspectFit;
-        onSourceChanged: play();
+        onSourceChanged: {
+            video.position = 0;
+            if(source.toString().length !== 0)
+            {
+                play();
+            }
+        }
+        onError: {
+            signalCenter.showMessage("播放时发生错误: %1 - %2".arg(error).arg(errorString));
+        }
         onPlayingChanged: {
             root.isPlaying = playing;
             __setScreenSaver();

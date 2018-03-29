@@ -2,6 +2,7 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 import "Component"
 import "../js/main.js" as Script
+import "../js/keywordhistory.js" as KWdb
 
 MyPage {
     id: page;
@@ -13,6 +14,15 @@ MyPage {
             iconSource: "toolbar-back";
             onClicked: pageStack.pop();
         }
+        Text {
+            anchors.verticalCenter: parent.verticalCenter;
+            visible: view.model.count !== 0;
+            elide: Text.ElideRight;
+            textFormat: Text.PlainText;
+            font: constant.labelFont;
+            color: constant.colorLight;
+            text: "按住搜索历史项可以删除该条";
+        }
     }
 
     onStatusChanged: {
@@ -23,11 +33,19 @@ MyPage {
         }
     }
 
-    function getlist(){
+    function getlist(opt){
         loading = true;
-        function s(){ loading = false; }
-        function f(err){ loading = false; signalCenter.showMessage(err); }
-        Script.getHotkeys(view.model, s, f);
+        if(!opt || opt === "hot")
+        {
+            function s(){ loading = false; }
+            function f(err){ loading = false; signalCenter.showMessage(err); }
+            Script.getHotkeys(hotModel, s, f);
+        }
+        if(!opt || opt === "history")
+        {
+            KWdb.loadHistory(view.model);
+            loading = false;
+        }
     }
 
     ViewHeader {
@@ -39,6 +57,12 @@ MyPage {
                 left: parent.left; right: searchBtn.left;
                 margins: constant.paddingMedium;
                 verticalCenter: parent.verticalCenter;
+            }
+            placeholderText: "输入关键词";
+            actionKeyLabel: "搜索";
+            onReturnPressed: {
+                if (text.length === 0) return;
+                searchBtn.clicked();
             }
         }
 
@@ -52,6 +76,8 @@ MyPage {
             platformInverted: true;
             onClicked: {
                 if (searchInput.text.length === 0) return;
+                KWdb.storeHistory(searchInput.text);
+                KWdb.loadHistory(view.model);
                 var prop = { term: searchInput.text };
                 var page = pageStack.push(Qt.resolvedUrl("SearchResultPage.qml"), prop);
                 page.getlist();
@@ -59,10 +85,75 @@ MyPage {
         }
     }
 
+    SectionHeader {
+        id: hot_header;
+        anchors.top: viewHeader.bottom;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        title: "热门关键词"
+        MouseArea{
+            anchors.fill: parent;
+            onClicked: {
+                getlist("hot");
+            }
+        }
+    }
+    Flow {
+        id: contentCol;
+        anchors { top: hot_header.bottom; left: parent.left; right: parent.right; margins: constant.paddingMedium;}
+        spacing: constant.paddingMedium;
+        Repeater {
+            model: ListModel { id: hotModel; }
+            delegate: Component{
+                Rectangle{
+                    width: title.width + constant.paddingSmall;
+                    height: title.height + constant.paddingSmall;
+                    color: mouse_area.pressed ? "lightgray" : "black";
+                    radius: 10;
+                    smooth: true;
+                    border.width: 2;
+                    border.color: "lightseagreen";
+                    Text{
+                        id: title;
+                        anchors.centerIn: parent;
+                        text: model.name;
+                        font: constant.subTitleFont;
+                        color: constant.colorLight;
+                        //font.bold: true;
+                    }
+                    MouseArea{
+                        id: mouse_area;
+                        anchors.fill: parent;
+                        onClicked: {
+                            searchInput.text = model.name;
+                            searchBtn.clicked();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    SectionHeader {
+        id: history_header;
+        anchors.top: contentCol.bottom;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        title: "搜索历史"
+        MouseArea{
+            anchors.fill: parent;
+            onClicked: {
+                getlist("history");
+            }
+        }
+    }
     ListView {
         id: view;
-        anchors { fill: parent; topMargin: viewHeader.height; }
+        anchors.top: history_header.bottom;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        anchors.bottom: parent.bottom;
         model: ListModel {}
+        clip: true;
         delegate: AbstractItem {
             Text {
                 anchors { left: parent.paddingItem.left; verticalCenter: parent.verticalCenter; }
@@ -74,6 +165,24 @@ MyPage {
                 searchInput.text = model.name;
                 searchBtn.clicked();
             }
+            // begin(11 a)
+            onPressAndHold:{
+                KWdb.removeOneHistory(model.name);
+                KWdb.loadHistory(view.model);
+            }
+            // end(11 a)
         }
+        // begin(11 a)
+        footer: FooterItem {
+            text:"清空记录";
+            visible: ListView.view.model.count !== 0;
+            enabled: visible;
+            onClicked: {
+                KWdb.clearHistory();
+                KWdb.loadHistory(view.model);
+            }
+        }
+        // end(11 a)
     }
+    ScrollDecorator { flickableItem: view; }
 }

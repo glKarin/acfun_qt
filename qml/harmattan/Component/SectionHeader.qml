@@ -2,6 +2,9 @@ import QtQuick 1.1
 
 Item {
     id: root;
+		// begin(11 a)
+		property bool inverted: false;
+		// end(11 a)
 
     property string title;
 
@@ -15,13 +18,17 @@ Item {
             top: parent.top; topMargin: constant.paddingLarge;
         }
         font: constant.titleFont;
-        color: constant.colorLight;
+				// begin(11 c)
+				color: root.inverted ? "white" : constant.colorLight;
+				// end(11 c)
         text: root.title;
     }
 
     Rectangle {
         anchors { left: parent.left; right: parent.right; bottom: parent.bottom; }
         height: 1;
-        color: constant.colorDisabled;
+				// begin(11 c)
+				color: root.inverted ? "white" : constant.colorDisabled;
+				// end(11 c)
     }
 }

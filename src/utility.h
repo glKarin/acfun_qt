@@ -3,6 +3,14 @@
 
 #include <QtDeclarative>
 
+// begin(11 a)
+// request header
+#define APP_VERSION "appVersion"
+#define MARKET "market"
+#define DEVICE_TYPE "deviceType"
+#define USER_AGENT "user_agent"
+// end(11 a)
+
 class Utility : public QObject
 {
     Q_OBJECT
@@ -43,6 +51,21 @@ public:
 
     // Launch built-in browser
     Q_INVOKABLE void openURLDefault(const QString &url);
+
+		// begin(11 a)
+		// copy output for debug
+    Q_INVOKABLE void copy_to_clipboard(const QString &text) const;
+    Q_INVOKABLE QVariant get_user_login_info() const;
+    Q_INVOKABLE void set_user_login_info(const QString &username, const QString &pwd);
+		Q_INVOKABLE void sign_out();
+		Q_INVOKABLE void sign_in();
+		Q_INVOKABLE void reset_header_setting();
+		Q_INVOKABLE bool is_update();
+		Q_INVOKABLE QVariant get_constant(const QString &name) const;
+		Q_INVOKABLE QVariant urlparse(const QString &url) const;
+    Q_INVOKABLE bool exec(const QString &cmd) const;
+    Q_INVOKABLE void weibo_share(const QString &title, const QString &link, const QString &pic);
+		// end(11 a)
 
 private:
     explicit Utility(QObject *parent = 0);

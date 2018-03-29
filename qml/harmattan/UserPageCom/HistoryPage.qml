@@ -31,6 +31,23 @@ MyPage {
         }
     }
 
+		// begin(11 c)
+		QtObject{
+			id: qobj;
+			property bool deleteMode: true;
+
+			function remove_one(acid, index)
+			{
+				if(!acid || isNaN(index))
+				{
+					return;
+				}
+				Database.remove_one(acid.toString());
+				view.model.remove(index);
+			}
+		}
+		// end(11 c)
+
     ViewHeader {
         id: viewHeader;
         title: page.title;
@@ -40,7 +57,24 @@ MyPage {
         id: view;
         anchors { fill: parent; topMargin: viewHeader.height; }
         model: ListModel {}
-        delegate: CommonDelegate {}
+				// begin(11 c)
+				delegate: CommonDelegate {
+						Button {
+							anchors {
+								right: parent.right;
+								verticalCenter: parent.verticalCenter;
+							}
+							opacity: 0.6;
+							platformStyle: ButtonStyle {
+								buttonWidth: buttonHeight;
+							}
+							enabled: !loading;
+							iconSource: "image://theme/icon-m-toolbar-delete"
+							visible: qobj.deleteMode;
+							onClicked: qobj.remove_one(model.acId, index);
+						}
+				}
+				// end(11 c)
     }
 
     ScrollDecorator { flickableItem: view; }

@@ -10,6 +10,10 @@ Item {
 
     property int commentCount: 0;
     property int secondsPlayed: timePlayed / 1000;
+    property bool running: acsettings.playerShowDanmu;
+
+    visible: running;
+    clip: true;
 
     function get(){
         var opt = {
@@ -27,6 +31,10 @@ Item {
     }
 
     function createText(){
+        if(!running)
+        {
+            return;
+        }
         if (secondsPlayed === 0) Utils.commentIndex = 0;
         var secs = secondsPlayed;
         var poolIdx = Utils.commentPool[Utils.commentIndex];
@@ -35,7 +43,8 @@ Item {
             if (secs - poolIdx.time < 3){
                 var prop = {
                     "color": Utils.intToColor(poolIdx.color),
-                    "font.pixelSize": poolIdx.fontSize,
+                    "font.pixelSize": parseInt(poolIdx.fontSize * acsettings.playerDanmuFactory),
+                                        "opacity": acsettings.playerDanmuOpacity,
                     "text": poolIdx.text
                 }
                 singleComment.createObject(root, prop);
@@ -63,7 +72,7 @@ Item {
                 property: "x";
                 from: root.width;
                 to: -commentText.width;
-                duration: 5000;
+                duration: parseInt(5000 / acsettings.playerDanmuSpeed);
                 onCompleted: commentText.destroy();
             }
 

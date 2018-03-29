@@ -16,11 +16,18 @@ Column {
             }
             font: constant.titleFont;
             color: constant.colorLight;
-            text: ">>";
+						// begin(11 c)
+						text: (model.action_name !== undefined && (model.action_name === 11 || model.action_name === 6))/*model.id !== undefined*/ ? ">>" : "";
+						// end(11 c)
         }
         MouseArea {
             anchors.fill: parent;
-            onClicked: internal.enterClass(model.id);
+						// begin(11 c)
+						enabled: model.action_name !== undefined && (model.action_name === 11 || model.action_name === 6)/*model.id !== undefined*/;
+						onClicked: {
+							internal.enterClass(model.action_name, model.id);
+						}
+						// end(11 c)
         }
     }
     ListView {
@@ -70,7 +77,9 @@ Column {
             MouseArea {
                 id: mouseArea;
                 anchors.fill: parent;
-                onClicked: signalCenter.viewDetail(model.acId);
+								// begin(11 c)
+								onClicked: internal.enterClass(model.action_name, model.acId);
+								// end(11 c)
             }
         }
     }

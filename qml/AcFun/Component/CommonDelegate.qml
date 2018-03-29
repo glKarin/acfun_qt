@@ -3,7 +3,7 @@ import QtQuick 1.1
 AbstractItem {
     id: root;
     implicitHeight: 90 + constant.paddingLarge*2;
-    onClicked: signalCenter.viewDetail(model.acId, model.channelId);
+    onClicked: signalCenter.viewDetail(model.acId, model.type);
     Image {
         id: preview;
         anchors {

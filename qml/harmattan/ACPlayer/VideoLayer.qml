@@ -6,6 +6,9 @@ import QtMultimediaKit 1.1
 Item {
     id: root;
 
+		// begin(11 a)
+    property alias seekable: video.seekable;
+		// end(11 a)
     property alias source: video.source;
     property alias duration: video.duration;
     property alias timePlayed: video.position;
@@ -17,6 +20,10 @@ Item {
 
     signal playbackStarted;
     signal loadStarted;
+
+		// begin(11 c)
+		signal playFinished;
+		// end(11 c)
 
     function play(){
         video.play();
@@ -51,6 +58,9 @@ Item {
         if (status === Video.EndOfMedia){
             video.stop();
             video.position = 0;
+						// begin(11 a)
+						root.playFinished();
+						// end(11 a)
         }
     }
 
@@ -82,8 +92,16 @@ Item {
         autoLoad: true;
         anchors.fill: parent;
         fillMode: Video.PreserveAspectFit;
-        onSourceChanged: play();
-        onPlayingChanged: {
+				// begin(11 c)
+				onSourceChanged: {
+					video.position = 0;
+					if(source.toString().length !== 0)
+					{
+						play();
+					}
+				}
+				// end(11 c)
+				onPlayingChanged: {
             root.isPlaying = playing;
             __setScreenSaver();
             __handleStatusChange(status, isPlaying, position, paused);
@@ -104,6 +122,11 @@ Item {
             }
             __handleStatusChange(status, isPlaying, position, paused);
         }
+				// begin(11 a)
+				onError: {
+					signalCenter.showMessage("播放时发生错误: %1 - %2".arg(error).arg(errorString));
+				}
+				// end(11 a)
     }
 
     Rectangle {

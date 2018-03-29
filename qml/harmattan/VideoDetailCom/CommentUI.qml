@@ -5,6 +5,12 @@ Sheet {
     id: root;
 
     property alias text: contentArea.text;
+		// begin(11 a)
+    property string quoteId: "";
+    property int quoteFloor: 0;
+		property string quoteUsername: "";
+		property string quoteContent: "";
+		// end(11 a)
 
     acceptButtonText: "发送";
     rejectButtonText: "取消";
@@ -25,7 +31,9 @@ Sheet {
             }
             focus: true;
             textFormat: TextEdit.PlainText;
-            placeholderText: "输入评论内容";
+						// begin(11 c)
+						placeholderText: root.quoteId.length === 0 ? "输入评论内容" : "引用  #%1 %2 : \n%3".arg(root.quoteFloor).arg(root.quoteUsername).arg(root.quoteContent);
+						// end(11 c)
             function setHeight(){ contentArea.height = Math.max(implicitHeight, minHeight) }
             onMinHeightChanged: setHeight();
             onImplicitHeightChanged: setHeight();

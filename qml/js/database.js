@@ -47,3 +47,27 @@ function clearHistory(){
                        tx.executeSql('DELETE FROM History');
                    })
 }
+
+// begin(11 c)
+function remove_one(key){
+    db.transaction(function(tx){
+					tx.executeSql('DELETE FROM History WHERE acId = \'%1\''.arg(key));
+                   });
+}
+
+function get_size(){
+	var rd = 0;
+	var rs;
+	db.readTransaction(function(tx){
+		try{
+			rs = tx.executeSql('SELECT COUNT(1) as \'count\' FROM History');
+			if(rs.rows.length === 1)
+				rd = rs.rows.item(0).count;
+		}catch(e){
+			rd = 0;
+		}
+	});
+	return rd;
+}
+// end(11 c)
+

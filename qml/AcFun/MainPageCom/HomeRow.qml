@@ -8,13 +8,23 @@ Column {
     ListHeading {
         id: listHeading;
         ListItemText {
+            id: list_item_list;
             anchors.fill: parent.paddingItem;
             role: "Heading";
-            text: model.name+" >>";
+            text: model.name;
         }
         MouseArea {
             anchors.fill: parent;
-            onClicked: internal.enterClass(model.id);
+            enabled: model.action_name !== undefined && (model.action_name === 11 || model.action_name === 6)/*model.id !== undefined*/;
+            onClicked: {
+                internal.enterClass(model.action_name, model.id);
+            }
+        }
+        Component.onCompleted: {
+             if(model.action_name !== undefined && (model.action_name === 11 || model.action_name === 6))
+             {
+                 list_item_list.text += "   >>";
+             }
         }
     }
     ListView {
@@ -64,7 +74,7 @@ Column {
             MouseArea {
                 id: mouseArea;
                 anchors.fill: parent;
-                onClicked: signalCenter.viewDetail(model.acId, model.channelId);
+                onClicked: internal.enterClass(model.action_name, model.acId);
             }
         }
     }

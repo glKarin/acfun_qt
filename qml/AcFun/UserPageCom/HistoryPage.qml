@@ -5,6 +5,7 @@ import "../../js/database.js" as Database
 
 MyPage {
     id: page;
+    title: "播放历史";
 
     tools: ToolBarLayout {
         ToolButton {
@@ -30,7 +31,20 @@ MyPage {
             }
         }
     }
+    QtObject{
+        id: qobj;
+        property bool deleteMode: true;
 
+        function remove_one(acid, index)
+        {
+            if(!acid || isNaN(index))
+            {
+                return;
+            }
+            Database.remove_one(acid.toString());
+            view.model.remove(index);
+        }
+    }
     ViewHeader {
         id: viewHeader;
         title: page.title;
@@ -40,7 +54,20 @@ MyPage {
         id: view;
         anchors { fill: parent; topMargin: viewHeader.height; }
         model: ListModel {}
-        delegate: CommonDelegate {}
+        delegate: CommonDelegate {
+            Button {
+                anchors {
+                    right: parent.right;
+                    verticalCenter: parent.verticalCenter;
+                }
+                opacity: 0.6;
+                enabled: !loading;
+                width: height;
+                iconSource: privateStyle.toolBarIconPath("toolbar-delete");
+                visible: qobj.deleteMode;
+                onClicked: qobj.remove_one(model.acId, index);
+            }
+        }
     }
 
     ScrollDecorator { flickableItem: view; }

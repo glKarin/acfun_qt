@@ -27,7 +27,67 @@ ACNetworkAccessManager::ACNetworkAccessManager(QObject *parent) :
 QNetworkReply *ACNetworkAccessManager::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
     QNetworkRequest req(request);
-    req.setRawHeader("User-Agent", "Acfun_Video/1.0 (iPod touch; iOS 6.1.3; Scale/2.00)");
+		// begin(11 c)
+
+#ifndef Q_OS_HARMATTAN
+    if(req.url().scheme() == "https")
+    {
+        QSslConfiguration config;
+        config.setPeerVerifyMode(QSslSocket::VerifyNone);
+        config.setProtocol(QSsl::TlsV1);
+        req.setSslConfiguration(config);
+    }
+#endif
+    QString host = request.url().host();
+    if(host == "play.youku.com" || host == "k.youku.com" || host == "ups.youku.com" || host == "vali.cp31.ott.cibntv.net") // 2018-1
+    {
+        //request.setAttribute(QNetworkRequest::CookieLoadControlAttribute, QNetworkRequest::Manual);
+        req.setRawHeader("Referer", "http://v.youku.com"); // 2018-1
+        req.setRawHeader("User-Agent",
+						"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36" // 2018-1
+    );
+				// glBegin(2017)
+        //QString s("__ysuid=" + QString::number(std::time(0))); // 2016
+				//QString s(QString("__ysuid=%1%2").arg(QDateTime::currentMSecsSinceEpoch()).arg(100 + qrand() % (999 - 100)));
+				//qDebug()<<s;
+        //request.setRawHeader("Cookie", s.toAscii());
+				// glEnd()
+    }
+		else
+		{
+			/*
+			qDebug()<<Utility::Instance()->getValue(USER_AGENT).toByteArray();
+			qDebug()<<Utility::Instance()->getValue(DEVICE_TYPE).toByteArray();
+			qDebug()<<Utility::Instance()->getValue(MARKET).toByteArray();
+			qDebug()<<Utility::Instance()->getValue(APP_VERSION).toByteArray();
+			*/
+			req.setRawHeader("User-Agent", Utility::Instance()->getValue(USER_AGENT).toByteArray());
+			req.setRawHeader("deviceType", Utility::Instance()->getValue(DEVICE_TYPE).toByteArray());
+			req.setRawHeader("market", Utility::Instance()->getValue(MARKET).toByteArray());
+			req.setRawHeader("appVersion", Utility::Instance()->getValue(APP_VERSION).toByteArray());
+			if(host == "player.acfun.cn")
+			{
+				QUrl new_url(request.url());
+				QList<QPair<QString, QString> >query_items = new_url.queryItems();
+				for(QList<QPair<QString, QString> >::iterator itor = query_items.begin();
+						itor != query_items.end();
+						++itor)
+				{
+					if(itor -> first == "referer")
+					{
+						QString referer = itor -> second;
+						query_items.erase(itor);
+						new_url.setQueryItems(query_items);
+						req.setUrl(new_url);
+						QByteArray bytes;
+						bytes.append(referer);
+						req.setRawHeader("Referer", bytes);
+						break;
+					}
+				}
+			}
+		}
+		// end(11 c)
     QNetworkReply *reply = QNetworkAccessManager::createRequest(op, req, outgoingData);
     return reply;
 }
@@ -76,7 +136,9 @@ void ACNetworkCookieJar::save()
     QList<QNetworkCookie> list = allCookies();
     QByteArray data;
     foreach (QNetworkCookie cookie, list) {
-        if (!cookie.isSessionCookie()){
+			// begin(11 c)
+        if (true || !cookie.isSessionCookie()){
+					// end(11 c)
             data.append(cookie.toRawForm());
             data.append("\n");
         }

@@ -13,11 +13,18 @@ MyPage {
     tools: ToolBarLayout {
         ToolButton {
             iconSource: "toolbar-back";
-            onClicked: pageStack.pop();
+            onClicked: {
+                if(from_where !== "list")
+                {
+                    pageStack.pop(undefined, true);
+                }
+                pageStack.pop();
+            }
         }
         ToolButton {
             iconSource: "../../gfx/favourite.svg";
-            onClicked: internal.addToFav();
+            opacity: internal.is_fav ? 1.0 : 0.5;
+            onClicked: internal.toggle_favorite();
         }
         ToolButton {
             iconSource: "../../gfx/edit.svg";
@@ -30,6 +37,7 @@ MyPage {
     }
 
     property string acId;
+    property string from_where: "list";
     onAcIdChanged: internal.getDetail();
 
     QtObject {
@@ -39,6 +47,81 @@ MyPage {
 
         property variant commentUI: null;
 
+        property int pageNumber: 1;
+        property int totalNumber: 0;
+        property int pageSize: 50;
+        property bool is_fav: false;
+
+        function is_favorite()
+        {
+            if (Script.is_signin()){
+                loading = true;
+                function s(obj){
+                    loading = false;
+                    is_fav = obj.vdata !== null ? obj.vdata : false;
+                }
+                function f(err){ loading = false; signalCenter.showMessage(err); }
+                Script.favorite(acId, s, f);
+            }
+        }
+
+        function unfav(){
+            if (Script.checkAuthData()){
+                var url = Script.AcApi.FAVORITE.arg(page.acId);
+                url += "?access_token="+acsettings.accessToken;
+                helperListener.reqUrl = url;
+                networkHelper.createDeleteRequest(url);
+                loading = true;
+            }
+        }
+
+        function toggle_favorite()
+        {
+            if(is_fav)
+            {
+                unfav();
+            }
+            else
+            {
+                addToFav();
+            }
+        }
+
+        function getComments(option){
+            loading = true;
+            var opt = { acId: acId, model: commentListView.model , pageSize: pageSize}
+            if (commentListView.count === 0) option = "renew";
+            option = option || "renew";
+            if (option === "renew"){
+                opt.renew = true;
+                totalNumber = 0;
+                pageNumber = 1;
+            } else {
+                opt.cursor = pageNumber + 1;
+            }
+            function s(obj){
+                loading = false;
+                pageNumber = obj.data.page.pageNo;
+                totalNumber = obj.data.page.totalCount;
+                pageSize = obj.data.page.pageSize;
+            }
+            function f(err){ loading = false; signalCenter.showMessage(err); }
+            Script.getVideoComments(opt, s, f);
+        }
+
+        function createQuoteCommentUI(commentId, floor, username, content){
+            if (!Script.checkAuthData()) return;
+            if (!commentUI){
+                commentUI = Qt.createComponent("CommentUI.qml").createObject(page);
+                commentUI.accepted.connect(sendComment);
+            }
+            commentUI.text = "";
+            commentUI.quoteId = commentId;
+            commentUI.quoteFloor = floor;
+            commentUI.quoteUsername = username;
+            commentUI.quoteContent = content;
+            commentUI.open();
+        }
         function createCommentUI(){
             if (!Script.checkAuthData()) return;
             if (!commentUI){
@@ -46,6 +129,10 @@ MyPage {
                 commentUI.accepted.connect(sendComment);
             }
             commentUI.text = "";
+            commentUI.quoteId = "";
+            commentUI.quoteFloor = 0;
+            commentUI.quoteUsername = "";
+            commentUI.quoteContent = "";
             commentUI.open();
         }
 
@@ -57,46 +144,60 @@ MyPage {
             }
             loading = true;
             var opt = { acId: acId, content: text }
-            function s(){ loading = false; signalCenter.showMessage("发送成功"); }
+                        if(commentUI.quoteId.length !== 0)
+                        {
+                            opt.quoteId = commentUI.quoteId;
+                        }
+            function s(){ loading = false; signalCenter.showMessage("发送成功"); getComments(); }
             function f(err){ loading = false; signalCenter.showMessage(err); }
             Script.sendComment(opt, s, f);
         }
 
         function getDetail(){
             loading = true;
-            function s(obj){ loading = false; detail = obj; loadText(); }
-            function f(err){ loading = false; signalCenter.showMessage(err); }
-            Script.getVideoDetail(acId+"/Article", s, f);
+            function s(obj){ loading = false; detail = obj.vdata; loadText(); getComments(); is_favorite(); /*log();*/ }
+            function f(err){
+                loading = false;
+                signalCenter.showMessage(err);
+                if(from_where !== "list")
+                {
+                    pageStack.pop(undefined, true);
+                }
+            }
+            Script.get_article_detail(acId, s, f);
         }
 
         function addToFav(){
             if (Script.checkAuthData()){
                 loading = true;
-                var s = function(){ loading = false; signalCenter.showMessage("收藏文章成功!") }
-                var f = function(err){ loading = false; signalCenter.showMessage(err); }
+                function s(){ loading = false; is_fav = true; signalCenter.showMessage("收藏文章成功!") }
+                function f(err, e){ loading = false; if(e) { if(e.eid === 610001) internal.is_fav = true; } signalCenter.showMessage(err); }
                 Script.addToFav(acId, s, f);
             }
         }
 
         function log(){
-            Database.storeHistory(acId, detail.category.id, detail.name,
-                                  detail.previewurl, detail.viewernum, detail.creator.name);
+            Database.storeHistory(acId, detail.channelId, detail.title, detail.image,
+                                  detail.visit.views, detail.owner.name);
         }
 
         function share(){
-            var url = "http://service.weibo.com/share/share.php";
-            url += "?url="+encodeURIComponent("http://www.acfun.tv/v/ac"+acId);
-            url += "&type=3";
-            url += "&title="+encodeURIComponent(internal.detail.name||"");
-            url += "&pic="+encodeURIComponent(internal.detail.previewurl||"");
-            utility.openURLDefault(url);
+            if(detail.shareUrl)
+            {
+                var url = "http://service.weibo.com/share/share.php";
+                url += "?url="+encodeURIComponent(internal.detail.shareUrl);
+                url += "&type=3";
+                url += "&title="+encodeURIComponent(internal.detail.title||"");
+                url += "&pic="+encodeURIComponent(internal.detail.cover||internal.detail.image||"");
+                utility.openURLDefault(url);
+            }
         }
 
         function loadText(){
             var model = repeater.model;
             model.clear();
             var partRep = /\[NextPage](.*?)\[\/NextPage]/g
-            var text = detail.txt;
+            var text = detail.article.content;
             if (!partRep.test(text)){
                 model.append({title: "", text: text});
             } else {
@@ -113,64 +214,184 @@ MyPage {
         }
     }
 
-    Flickable {
-        id: view;
-        anchors.fill: parent;
-        contentWidth: contentCol.width;
-        contentHeight: contentCol.height;
-        boundsBehavior: Flickable.StopAtBounds;
-        Column {
-            id: contentCol;
-            ViewHeader {
-                id: viewHeader;
-                title: internal.detail.name||""
-            }
-            ListHeading {
-                ListItemText {
-                    anchors.fill: parent.paddingItem;
-                    role: "Heading";
-                    text: internal.detail.creator?internal.detail.creator.name:"";
+    Connections {
+        id: helperListener;
+        property string reqUrl;
+        target: networkHelper;
+        onRequestFinished: {
+            if (url.toString() === helperListener.reqUrl){
+                loading = false;
+                try
+                {
+                    var obj = JSON.parse(message);
+                    if(Script.check_error(Script.AcApi.FAVORITE, obj, function(err){
+                                          signalCenter.showMessage(err);
+                }))
+                    {
+                        return;
+                    }
+                    internal.is_fav = false;
+                    signalCenter.showMessage("已取消收藏文章");
+                }
+                catch(e)
+                {
+                    signalCenter.showMessage("取消收藏文章出现错误");
                 }
             }
-            Repeater {
-                id: repeater;
-                model: ListModel {}
-                Column {
-                    ListHeading {
-                        platformInverted: true
-                        visible: model.title !== "";
-                        ListItemText {
-                            platformInverted: true;
-                            anchors.fill: parent.paddingItem;
-                            role: "Heading";
-                            text: model.title;
-                        }
-                    }
-                    WebView {
-                        id: webView;
-                        preferredWidth: view.width;
-                        preferredHeight: view.height;
-                        settings {
-                            standardFontFamily: platformStyle.fontFamilyRegular;
-                            defaultFontSize: platformStyle.fontSizeMedium;
-                            defaultFixedFontSize: platformStyle.fontSizeMedium;
-                            minimumFontSize: platformStyle.fontSizeMedium;
-                            minimumLogicalFontSize: platformStyle.fontSizeMedium;
-                        }
-                        html: model.text;
-                        onLinkClicked: Qt.openUrlExternally(link);
-                    }
-                }
-            }
-            Text {
-                width: view.width;
-                wrapMode: Text.Wrap;
-                font: constant.labelFont;
-                color: constant.colorMid;
-                text: internal.detail.desc||"";
+        }
+        onRequestFailed: {
+            if (url.toString() === helperListener.reqUrl){
+                loading = false;
+                signalCenter.showMessage("取消收藏文章失败");
             }
         }
     }
 
-    ScrollDecorator { flickableItem: view; }
+    ViewHeader {
+        id: viewHeader;
+        anchors.top: parent.top;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        //width: view.width;
+        title: internal.detail.title || "";
+    }
+    ListHeading {
+        id: section_header;
+        anchors.top: viewHeader.bottom;
+        anchors.left: parent.left;
+        anchors.right: parent.right;
+        ListItemText {
+            anchors.fill: parent.paddingItem;
+            role: "Heading";
+            text: internal.detail.owner ? internal.detail.owner.name : "";
+        }
+        MouseArea{
+            anchors.fill: parent;
+            onClicked: {
+                if(internal.detail.owner)
+                {
+                    signalCenter.view_user_detail_by_id(internal.detail.owner["id"]);
+                }
+            }
+        }
+    }
+    ButtonRow {
+        id: tabRow;
+        anchors {
+            left: parent.left;
+            right: parent.right;
+            bottom: parent.bottom
+        }
+        TabButton {
+            text: "文章详请";
+            tab: web_view;
+        }
+        TabButton {
+            text: "评论";
+            tab: commentView;
+        }
+    }
+
+    TabGroup {
+        id: tabGroup;
+        anchors {
+            left: parent.left; right: parent.right;
+            top: section_header.bottom; bottom: tabRow.top;
+        }
+        currentTab: web_view;
+        clip: true;
+
+        Item{
+            id: web_view;
+            anchors.fill: parent;
+            Flickable {
+                id: view;
+                anchors.fill: parent;
+                contentWidth: contentCol.width;
+                contentHeight: contentCol.height;
+                boundsBehavior: Flickable.StopAtBounds;
+                clip: true;
+                Column {
+                    id: contentCol;
+                    Repeater {
+                        id: repeater;
+                        model: ListModel {}
+                        Column {
+                            ListHeading {
+                                platformInverted: true
+                                visible: model.title !== "";
+                                ListItemText {
+                                    platformInverted: true;
+                                    anchors.fill: parent.paddingItem;
+                                    role: "Heading";
+                                    text: model.title;
+                                }
+                            }
+                            WebView {
+                                id: webView;
+                                preferredWidth: view.width;
+                                preferredHeight: view.height;
+                                html: model.text;
+                                onLinkClicked: signalCenter.view_link(link);
+                                settings {
+                                    standardFontFamily: platformStyle.fontFamilyRegular;
+                                    defaultFontSize: platformStyle.fontSizeMedium;
+                                    defaultFixedFontSize: platformStyle.fontSizeMedium;
+                                    minimumFontSize: platformStyle.fontSizeMedium;
+                                    minimumLogicalFontSize: platformStyle.fontSizeMedium;
+                                    autoLoadImages: acsettings.articleLoadImage;
+                                }
+                            }
+                        }
+                    }
+                    Text {
+                        width: view.width;
+                        wrapMode: Text.Wrap;
+                        font: constant.labelFont;
+                        color: constant.colorMid;
+                        text: internal.detail.desc||"";
+                    }
+                }
+            }
+            ScrollDecorator { flickableItem: view; }
+        }
+
+        Item {
+            id: commentView;
+            anchors.fill: parent;
+            ListView {
+                id: commentListView;
+                anchors.fill: parent;
+                model: ListModel {}
+                header: PullToActivate {
+                    myView: commentListView;
+                    enabled: !loading;
+                    onRefresh: internal.getComments();
+                }
+                delegate: Component{
+                    CommentDelegate{
+                        onAvatarClicked: {
+                            if(userId)
+                            {
+                                signalCenter.view_user_detail_by_id(userId);
+                            }
+                        }
+                        onContentTextClicked: {
+                            if(commentId)
+                            {
+                                internal.createQuoteCommentUI(commentId, floorindex, userName, content);
+                            }
+                        }
+                    }
+                }
+                footer: FooterItem {
+                    visible: internal.pageSize*internal.pageNumber<internal.totalNumber;
+                    enabled: !loading;
+                    onClicked: internal.getComments("next");
+                }
+                ScrollDecorator { flickableItem: parent; }
+            }
+        }
+
+    }
 }
